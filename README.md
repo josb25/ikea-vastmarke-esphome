@@ -158,13 +158,14 @@ binary_sensor:
     name: "Puck Button"
     id: puck_button
     filters:
-      - delayed_on_off: 25ms
+      - delayed_on_off: 30ms
     on_multi_click:
       # Single Click: Fires event to HA; toggles lamp if toggle is ON
       - timing:
           - ON for at most 400ms
-          - OFF for at least 250ms
+          - OFF for at least 300ms
         then:
+          - logger.log: "Puck Button: Single click"
           - event.trigger:
               id: puck_event
               event_type: single_press
@@ -183,8 +184,8 @@ binary_sensor:
           - ON for at most 400ms
           - OFF for at most 400ms
           - ON for at most 400ms
-          - OFF for at least 200ms
         then:
+          - logger.log: "Puck Button: Double click"
           - event.trigger:
               id: puck_event
               event_type: double_press
@@ -195,8 +196,9 @@ binary_sensor:
 
       # Long Press: Fires long_press event to Home Assistant
       - timing:
-          - ON for at least 500ms
+          - ON for at least 600ms
         then:
+          - logger.log: "Puck Button: Long press"
           - event.trigger:
               id: puck_event
               event_type: long_press

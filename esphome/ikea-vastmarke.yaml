@@ -1,5 +1,5 @@
 substitutions:
-  name: "ikea-vastmarke"
+  name: "ikea-vaestmaerke"
   friendly_name: "IKEA VASTMARKE"
 
   # GPIO pin assignments (ESP32-C3 Super Mini)
@@ -22,13 +22,13 @@ wifi:
   password: !secret wifi_password
   fast_connect: true
   ap:
-    ssid: "IKEA-Vastmarke-Fallback"
+    ssid: "IKEA-Vaestmaerke-Fallback"
     password: !secret fallback_ap_password
 
 captive_portal:
 
 logger:
-  level: INFO
+  level: DEBUG
 
 api:
   reboot_timeout: 0s
@@ -89,14 +89,15 @@ binary_sensor:
     name: "Puck Button"
     id: puck_button
     filters:
-      - delayed_on_off: 25ms
+      - delayed_on_off: 30ms
 
     on_multi_click:
       # 1. Single Click: Fires event to HA; toggles lamp if toggle switch is ON
       - timing:
           - ON for at most 400ms
-          - OFF for at least 250ms
+          - OFF for at least 300ms
         then:
+          - logger.log: "Puck Button: Single click"
           - event.trigger:
               id: puck_event
               event_type: single_press
@@ -115,8 +116,8 @@ binary_sensor:
           - ON for at most 400ms
           - OFF for at most 400ms
           - ON for at most 400ms
-          - OFF for at least 200ms
         then:
+          - logger.log: "Puck Button: Double click"
           - event.trigger:
               id: puck_event
               event_type: double_press
@@ -125,10 +126,11 @@ binary_sensor:
               data:
                 action: double_click
 
-      # 3. Long Press (Hold > 500ms): Fires long_press event to Home Assistant
+      # 3. Long Press (Hold > 600ms): Fires long_press event to Home Assistant
       - timing:
-          - ON for at least 500ms
+          - ON for at least 600ms
         then:
+          - logger.log: "Puck Button: Long press"
           - event.trigger:
               id: puck_event
               event_type: long_press
