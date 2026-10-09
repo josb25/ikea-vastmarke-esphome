@@ -42,7 +42,7 @@ The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V dur
 
 ## Wiring & Solder Points
 
-![MCU Pads](images/mcu_pads.jpeg)  
+![MCU Pads](images/mcu_pads.png)  
 *Figure 2: MCU location and solder pads (FT60E011A desoldered).*
 
 ![Power Pads](images/power_pads.png)  
@@ -104,11 +104,12 @@ light:
     restore_mode: RESTORE_DEFAULT_OFF
 ```
 
-### Button Behavior (Single, Double & Long Press)
+### Button & Event Behavior
 
-The physical puck button fires native Home Assistant events (`single_press`, `double_press`, `long_press`) and controls the lamp locally:
+All button events (`single_press`, `double_press`, `long_press`) are exposed to Home Assistant via a native `event` entity. A configuration switch allows you to choose whether a single click should toggle the lamp locally:
 
 ```yaml
+# Exposed to Home Assistant as: event.ikea_vastmarke_button_event
 event:
   - platform: template
     name: "Button Event"
@@ -117,6 +118,16 @@ event:
       - single_press
       - double_press
       - long_press
+
+# Configuration toggle in Home Assistant
+switch:
+  - platform: template
+    name: "Single Click Controls Lamp"
+    id: single_click_controls_lamp
+    icon: "mdi:lightbulb-auto"
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    entity_category: config
 
 binary_sensor:
   - platform: gpio
@@ -129,17 +140,25 @@ binary_sensor:
     filters:
       - delayed_on_off: 25ms
     on_multi_click:
-      # Single Click: Toggle light & fire single_press event
+      # Single Click: Fires event to HA; toggles lamp if toggle is ON
       - timing:
           - ON for at most 400ms
           - OFF for at least 250ms
         then:
-          - light.toggle: mood_light
           - event.trigger:
               id: puck_event
               event_type: single_press
+          - homeassistant.event:
+              event: esphome.ikea_vastmarke_button
+              data:
+                action: single_click
+          - if:
+              condition:
+                switch.is_on: single_click_controls_lamp
+              then:
+                - light.toggle: mood_light
 
-      # Double Click: Fire double_press event (e.g. good night routine)
+      # Double Click: Fires double_press event to Home Assistant
       - timing:
           - ON for at most 400ms
           - OFF for at most 400ms
@@ -149,18 +168,30 @@ binary_sensor:
           - event.trigger:
               id: puck_event
               event_type: double_press
+          - homeassistant.event:
+              event: esphome.ikea_vastmarke_button
+              data:
+                action: double_click
 
-      # Long Press: Relative dimming & fire long_press event
+      # Long Press: Fires long_press event to Home Assistant
       - timing:
           - ON for at least 500ms
         then:
-          - light.dim_relative:
-              id: mood_light
-              relative_brightness: 25%
-              transition_length: 300ms
           - event.trigger:
               id: puck_event
               event_type: long_press
+          - homeassistant.event:
+              event: esphome.ikea_vastmarke_button
+              data:
+                action: long_press
+          - if:
+              condition:
+                switch.is_on: single_click_controls_lamp
+              then:
+                - light.dim_relative:
+                    id: mood_light
+                    relative_brightness: 25%
+                    transition_length: 300ms
 ```
 
 ---
