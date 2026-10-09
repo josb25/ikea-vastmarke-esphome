@@ -71,6 +71,9 @@ The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V dur
    * **VBUS pad** (Power from USB-C, 5V–9V)
    * **GND pad** (Common ground)
    *(Do not attach the ESP32 or buck converter yet!)*
+
+   > [!TIP]
+   > If using enameled copper wire or wire of the same color, label the free ends with small masking tape flags (e.g. `2`, `7`, `+`, `-`) before routing so you can easily identify them later.
 5. **Route Wires & Reassemble Internal Tray:**
    * Route all 4 wires through the existing USB cable opening to the bottom cavity.
    * Reseat the puck button onto its three springs.
@@ -86,6 +89,9 @@ The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V dur
    * Apply insulating tape (e.g. Kapton) to the boards if needed.
    * Secure the ESP32-C3 Super Mini and DD4012SA inside the bottom cavity using adhesive or double-sided tape.
    * Reattach the rubber base.
+
+![Bottom Assembly](images/bottom_assembly.jpg)  
+*Figure 3: Completed bottom cavity assembly. The DD4012SA buck converter (left) and ESP32-C3 Super Mini (right) are insulated with Kapton tape, wired to the routed leads, and secured in the cavity next to the USB cable routing opening.*
 
 ---
 
@@ -230,7 +236,7 @@ action:
 
 ## Image Sources & Attribution
 
-* **Figure 1 & Figure 2 (Physical build photos):** Captured by [@josb25](https://github.com/josb25) during the modification.
+* **Figure 1, Figure 2 & Figure 3 (Physical build photos):** Captured by [@josb25](https://github.com/josb25) during the modification.
 
 ---
 
