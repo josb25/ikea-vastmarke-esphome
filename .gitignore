@@ -1,0 +1,14 @@
+# Secrets
+esphome/secrets.yaml
+secrets.yaml
+
+# ESPHome Build Cache
+.esphome/
+
+# OS & Navigation Shortcuts
+*.lnk
+.DS_Store
+Thumbs.db
+*.tmp
+.vscode/
+.idea/
