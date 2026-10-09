@@ -46,12 +46,6 @@ The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V dur
 ![Soldered Connections](images/soldered_pads.jpg)  
 *Figure 2: Real build close-up with `FT60E011A` desoldered. Enameled copper wires connected to Pad 2 (Puck button) and Pad 7 (LED PWM gate). (Note: Power supply wires to VBUS/GND were added in the next step; SDA/SCL wires shown were used during diagnostic I2C testing and are not needed).*
 
-![MCU Pads](images/mcu_pads.png)  
-*Figure 3: MCU footprint pinout diagram.*
-
-![Power Pads](images/power_pads.png)  
-*Figure 4: VBUS and GND power solder points (source: FCC ID: FHO-E2400-T).*
-
 | Signal | Source on IKEA PCB | Destination | Description |
 | :--- | :--- | :--- | :--- |
 | **Button (`SW1`)** | Desoldered MCU Pad 2 | ESP32 `GPIO 4` | Active-LOW, internal pull-up |
@@ -222,7 +216,6 @@ action:
 ## Image Sources & Attribution
 
 * **Figure 1 & Figure 2 (Physical build photos):** Captured by [@josb25](https://github.com/josb25) during the modification.
-* **Figure 3 & Figure 4 (PCB diagrams):** Derived from the publicly available FCC compliance filings ([`FCC ID: FHO-E2400-T`](https://fccid.io/FHO-E2400-T), IKEA of Sweden AB, Exhibit: Internal Photos). Annotations and pinout markers were added for this guide.
 
 ---
 
