@@ -58,19 +58,34 @@ The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V dur
 
 ## Installation Steps
 
+> [!IMPORTANT]
+> **Assembly Order:** Solder flying wire leads to the IKEA stock board **first**, then route them through the USB cable channel and reassemble the internal tray. Only **after** the tray is closed do you solder the wires to the ESP32 and DD4012SA in the bottom cavity.
+
 1. **Flash Firmware:** Flash the ESP32-C3 via USB before installing (see [ESPHome Config](#esphome-config)).
-2. **Disassemble:** Remove the rubber base and screws. Carefully lift the coil assembly (watch out for the three puck springs).
+2. **Disassemble:** Remove the rubber base and screws. Carefully lift the coil assembly (watch out for the three puck springs under the button).
 3. **Desolder MCU:** Desolder and remove the 8-pin `FT60E011A` chip next to the button. Clean pads with solder wick.
-4. **Solder Wires:**
-   * Solder wire from **MCU Pad 2** to ESP32 **GPIO 4**.
-   * Solder wire from **MCU Pad 7** to ESP32 **GPIO 5**.
-   * Solder wire from **VBUS pad** to DD4012SA **VIN+**.
-   * Solder common **GND** to DD4012SA **GND** and ESP32 **GND**.
+4. **Solder Leads to Stock PCB:**
+   Cut 4 thin wires (AWG 28–32 or enameled copper wire, ~8–10 cm long) and solder them to the stock PCB:
+   * **MCU Pad 2** (Puck button signal)
+   * **MCU Pad 7** (LED MOSFET gate)
+   * **VBUS pad** (Power from USB-C, 5V–9V)
+   * **GND pad** (Common ground)
+   *(Do not attach the ESP32 or buck converter yet!)*
+5. **Route Wires & Reassemble Internal Tray:**
+   * Route all 4 wires through the existing USB cable opening to the bottom cavity.
+   * Reseat the puck button onto its three springs.
+   * Screw the internal tray and coil assembly back together so the upper housing is completely reassembled.
+6. **Wire ESP32 & DD4012SA in Bottom Cavity:**
+   Now solder the routed leads to the step-down converter and ESP32:
+   * Solder the **VBUS lead** to DD4012SA **VIN+**.
+   * Solder the **GND lead** to DD4012SA **GND** and bridge to ESP32 **GND**.
    * Solder DD4012SA **VOUT+** (3.3V) to ESP32 **3V3**.
-5. **Route & Mount:**
-   * Route the wires through the existing cable routing opening to the bottom side.
-   * Secure the ESP32-C3 Super Mini and DD4012SA inside the bottom cavity using adhesive.
-   * Reassemble the tray.
+   * Solder the **Pad 2 lead** to ESP32 **GPIO 4**.
+   * Solder the **Pad 7 lead** to ESP32 **GPIO 5**.
+7. **Mount & Close:**
+   * Apply insulating tape (e.g. Kapton) to the boards if needed.
+   * Secure the ESP32-C3 Super Mini and DD4012SA inside the bottom cavity using adhesive or double-sided tape.
+   * Reattach the rubber base.
 
 ---
 
