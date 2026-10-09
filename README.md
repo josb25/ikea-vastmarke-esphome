@@ -12,7 +12,7 @@ Integrates the LED mood light and the physical puck push button into Home Assist
 ## Features
 
 * **Mood Light Control:** 0–100% smooth PWM dimming via Home Assistant and physical button.
-* **Smart Puck Button:** Multi-click actions (single click toggles light, double click fires Home Assistant event, hold dims light).
+* **Smart Puck Button:** Multi-click actions exposing all button events (`single_press`, `double_press`, `long_press`) directly to Home Assistant. By default, single click toggles the lamp and hold steps brightness.
 * **Decoupled Button Mode:** Optional settings switch in Home Assistant to decouple the physical button from the lamp.
 * **Autonomous Qi2 Charging:** Qi2 15W MPP fast charging electronics remain untouched and function independently.
 * **Invisible Installation:** Both boards fit inside the bottom cavity. The exterior remains completely stock.
