@@ -5,7 +5,6 @@ substitutions:
   # GPIO pin assignments (ESP32-C3 Super Mini)
   pin_button: "GPIO4"      # Pad 2 of desoldered MCU (Puck Button SW1, Active-LOW)
   pin_led_pwm: "GPIO5"     # Pad 7 of desoldered MCU (Gate of AO3400 N-MOSFET)
-  pin_status_led: "GPIO8"  # Onboard LED (Active-LOW)
 
 esphome:
   name: ${name}
@@ -46,10 +45,6 @@ time:
   - platform: homeassistant
     id: ha_time
 
-status_led:
-  pin:
-    number: ${pin_status_led}
-    inverted: true
 
 # Native Home Assistant Event Entity
 # Exposes single_press, double_press, and long_press to Home Assistant
