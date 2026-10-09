@@ -4,7 +4,8 @@ ESP32-C3 mod for the **IKEA VÄSTMÄRKE** Qi2 wireless charging tray with mood l
 
 Integrates the LED mood light and the physical puck push button into Home Assistant via ESPHome. The Qi2 15W wireless charging operates autonomously as stock.
 
-![PCB Overview](images/pcb_overview.png)
+![PCB Overview](images/pcb_overview.png)  
+*Figure 1: Main PCB component layout (source: FCC ID: FHO-E2400-T, annotated).*
 
 ---
 
@@ -41,9 +42,11 @@ The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V dur
 
 ## Wiring & Solder Points
 
-![MCU Pads](images/mcu_pads.jpeg)
+![MCU Pads](images/mcu_pads.jpeg)  
+*Figure 2: MCU location and solder pads (FT60E011A desoldered).*
 
-![Power Pads](images/power_pads.png)
+![Power Pads](images/power_pads.png)  
+*Figure 3: VBUS and GND power solder points (source: FCC ID: FHO-E2400-T).*
 
 | Signal | Source on IKEA PCB | Destination | Description |
 | :--- | :--- | :--- | :--- |
@@ -178,6 +181,16 @@ action:
     target:
       area_id: bedroom
 ```
+
+---
+
+## Image Sources & Attribution
+
+All PCB photographs in this repository are derived from the publicly available FCC equipment authorization filings:
+* **Applicant:** IKEA of Sweden AB
+* **FCC ID:** [`FHO-E2400-T`](https://fccid.io/FHO-E2400-T)
+* **Exhibit:** Internal Photos
+* **License/Usage:** Public regulatory filing documents. Annotations, pinout markers, and pad highlights were added for this guide.
 
 ---
 
