@@ -23,8 +23,10 @@ Integrates the LED mood light and the physical puck push button into Home Assist
 
 * **IKEA VÄSTMÄRKE** wireless charging tray (`E2400-T`)
 * **ESP32-C3 Super Mini**
-* **DD4012SA DC-DC buck converter** (configured for 3.3V output)
-* Thin hookup wire (AWG 28–32 or enameled copper wire)
+* **DD4012SA DC-DC buck converter** (**3.3V version** — see caution below!)
+* **Hookup wire:**
+  * **Data lines (`SW1` & LED gate):** Thin wire (AWG 28–32 or enameled copper wire)
+  * **Power lines (`VBUS`, `GND`, `3V3`):** Thicker stranded wire (AWG 22–26, rated for ≥0.5A–1A)
 * Kapton tape & hot glue
 
 ---
@@ -40,6 +42,9 @@ By **desoldering the `FT60E011A` MCU**:
 
 The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V during Qi2 USB-PD fast charge) to a steady 3.3V, feeding the ESP32 directly via its `3V3` pin.
 
+> [!CAUTION]
+> **Buck Converter Voltage:** The `DD4012SA` module is manufactured in several fixed-voltage versions (3.3V, 5V, 9V, 12V) or with selectable solder jumpers on the back. You **must use the 3.3V version** (or configure the solder jumper strictly for 3.3V). Feeding 5V or higher directly into the ESP32's `3V3` pin will permanently destroy the ESP32! Always verify the output with a multimeter before wiring it to the ESP32.
+
 ---
 
 ## Wiring & Solder Points
@@ -47,13 +52,16 @@ The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V dur
 ![Soldered Connections](images/soldered_pads.jpg)  
 *Figure 2: Real build close-up with `FT60E011A` desoldered. Enameled copper wires connected to Pad 2 (Puck button) and Pad 7 (LED PWM gate). (Note: Power supply wires to VBUS/GND were added in the next step; SDA/SCL wires shown were used during diagnostic I2C testing and are not needed).*
 
-| Signal | Source on IKEA PCB | Destination | Description |
-| :--- | :--- | :--- | :--- |
-| **Button (`SW1`)** | Desoldered MCU Pad 2 | ESP32 `GPIO 4` | Active-LOW, internal pull-up |
-| **LED Gate** | Desoldered MCU Pad 7 | ESP32 `GPIO 5` | Gate of `AO3400` MOSFET |
-| **Power Input** | USB-C `VBUS` pad (5V–9V) | DD4012SA `VIN+` | Unregulated input |
-| **Power Output**| DD4012SA `VOUT+` (3.3V) | ESP32 `3V3` | Regulated 3.3V rail |
-| **Ground** | IKEA `GND` pad | DD4012SA `GND` & ESP32 `GND` | Common ground |
+| Signal | Source on IKEA PCB | Destination | Recommended Wire | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| **Button (`SW1`)** | Desoldered MCU Pad 2 | ESP32 `GPIO 4` | AWG 28–32 (thin / enameled) | Active-LOW, internal pull-up (<1 mA) |
+| **LED Gate** | Desoldered MCU Pad 7 | ESP32 `GPIO 5` | AWG 28–32 (thin / enameled) | Gate of `AO3400` MOSFET (<1 mA) |
+| **Power Input** | USB-C `VBUS` pad (5V–9V) | DD4012SA `VIN+` | AWG 22–26 (stranded power) | Unregulated input (~0.5A peak) |
+| **Power Output**| DD4012SA `VOUT+` (3.3V) | ESP32 `3V3` | AWG 22–26 (stranded power) | Regulated 3.3V rail (~0.5A peak) |
+| **Ground** | IKEA `GND` pad | DD4012SA `GND` & ESP32 `GND` | AWG 22–26 (stranded power) | Common ground return |
+
+> [!NOTE]
+> **Wire Sizing & Amperage:** Thin hookup wire or enameled copper wire is fine for data lines (Pad 2 and Pad 7 draw negligible current, <1 mA). However, the power lines (`VBUS`, `GND`, and the 3.3V link) carry ESP32 WiFi transmission current spikes (~300–500 mA peak). Use thicker stranded wire (AWG 22–26, rated for at least 0.5A–1A) for power and ground to prevent resistive voltage drop and intermittent WiFi brownouts. (You can see the thicker red and black power wires in Figure 3).
 
 ---
 
@@ -66,11 +74,11 @@ The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V dur
 2. **Disassemble:** Remove the screws on the bottom of the tray. Carefully lift the coil assembly (watch out for the three puck springs under the button).
 3. **Desolder MCU:** Desolder and remove the 8-pin `FT60E011A` chip next to the button. Clean pads with solder wick.
 4. **Solder Leads to Stock PCB:**
-   Cut 4 thin wires (AWG 28–32 or enameled copper wire, ~8–10 cm long) and solder them to the stock PCB:
-   * **MCU Pad 2** (Puck button signal)
-   * **MCU Pad 7** (LED MOSFET gate)
-   * **VBUS pad** (Power from USB-C, 5V–9V)
-   * **GND pad** (Common ground)
+   Cut 4 flying wire leads (~8–10 cm long) and solder them to the stock PCB:
+   * **MCU Pad 2** (Puck button signal) — thin wire (AWG 28–32 or enameled wire)
+   * **MCU Pad 7** (LED MOSFET gate) — thin wire (AWG 28–32 or enameled wire)
+   * **VBUS pad** (Power from USB-C, 5V–9V) — thicker power wire (AWG 22–26)
+   * **GND pad** (Common ground) — thicker power wire (AWG 22–26)
    *(Do not attach the ESP32 or buck converter yet!)*
 
    > [!TIP]
