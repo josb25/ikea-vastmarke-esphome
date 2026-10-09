@@ -70,10 +70,9 @@ The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V dur
 > [!IMPORTANT]
 > **Assembly Order:** Solder flying wire leads to the IKEA stock board **first**, then route them through the USB cable channel and reassemble the internal tray. Only **after** the tray is closed do you solder the wires to the ESP32 and DD4012SA in the bottom cavity.
 
-1. **Flash Firmware:** Flash the ESP32-C3 via USB before installing (see [ESPHome Config](#esphome-config)).
-2. **Disassemble:** Remove the screws on the bottom of the tray. Carefully lift the coil assembly (watch out for the three puck springs under the button).
-3. **Desolder MCU:** Desolder and remove the 8-pin `FT60E011A` chip next to the button. Clean pads with solder wick.
-4. **Solder Leads to Stock PCB:**
+1. **Disassemble:** Remove the screws on the bottom of the tray. Carefully lift the coil assembly (watch out for the three puck springs under the button).
+2. **Desolder MCU:** Desolder and remove the 8-pin `FT60E011A` chip next to the button. Clean pads with solder wick.
+3. **Solder Leads to Stock PCB:**
    Cut 4 flying wire leads (~8–10 cm long) and solder them to the stock PCB:
    * **MCU Pad 2** (Puck button signal) — thin wire (AWG 28–32 or enameled wire)
    * **MCU Pad 7** (LED MOSFET gate) — thin wire (AWG 28–32 or enameled wire)
@@ -81,23 +80,28 @@ The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V dur
    * **GND pad** (Common ground) — thicker power wire (AWG 22–26)
    *(Do not attach the ESP32 or buck converter yet!)*
 
-   > [!TIP]
-   > If using enameled copper wire or wire of the same color, label the free ends with small masking tape flags (e.g. `2`, `7`, `+`, `-`) before routing so you can easily identify them later.
-5. **Route Wires & Reassemble Internal Tray:**
+> [!TIP]
+> **Wire Labeling:** If using enameled copper wire or wires of the same color, label the free ends with small masking tape flags (e.g. `2`, `7`, `+`, `-`) before routing through the hole so you don't mix them up during bottom assembly.
+
+4. **Route Wires & Reassemble Internal Tray:**
    * Route all 4 wires through the existing USB cable opening to the bottom cavity.
    * Reseat the puck button onto its three springs.
    * Screw the internal tray and coil assembly back together so the upper housing is completely reassembled.
-6. **Wire ESP32 & DD4012SA in Bottom Cavity:**
+5. **Wire ESP32 & DD4012SA in Bottom Cavity:**
    Now solder the routed leads to the step-down converter and ESP32:
    * Solder the **VBUS lead** to DD4012SA **VIN+**.
    * Solder the **GND lead** to DD4012SA **GND** and bridge to ESP32 **GND**.
    * Solder DD4012SA **VOUT+** (3.3V) to ESP32 **3V3**.
    * Solder the **Pad 2 lead** to ESP32 **GPIO 4**.
    * Solder the **Pad 7 lead** to ESP32 **GPIO 5**.
-7. **Secure Boards:**
+6. **Secure Boards:**
    * Insulate both boards with Kapton tape.
    * Fix the ESP32-C3 Super Mini and DD4012SA inside the bottom cavity with hot glue (the stiff wires also help hold them securely in position).
+   * **USB-C Accessibility:** Ensure you orient the ESP32 so its USB-C port faces outward and is not blocked by glue.
    * Note: The bottom cavity remains open as stock for cable management—there is no bottom cover to reattach.
+7. **Flash Firmware:**
+   * Because the ESP32-C3 sits in the open underside cavity, you can plug in a USB-C cable and flash the initial firmware at any point (before assembly or after mounting). See [ESPHome Config](#esphome-config).
+   * Once flashed and joined to your Wi-Fi network, all subsequent updates are performed wirelessly via OTA.
 
 ![Bottom Assembly](images/bottom_assembly.jpg)  
 *Figure 3: Completed bottom cavity assembly. The DD4012SA buck converter (left) and ESP32-C3 Super Mini (right) are insulated with Kapton tape, wired to the routed leads, and fixed in place with hot glue inside the open cable cavity.*
