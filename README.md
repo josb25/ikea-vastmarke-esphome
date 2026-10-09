@@ -4,8 +4,8 @@ ESP32-C3 mod for the **IKEA VÄSTMÄRKE** Qi2 wireless charging tray with mood l
 
 Integrates the LED mood light and the physical puck push button into Home Assistant via ESPHome. The Qi2 15W wireless charging operates autonomously as stock.
 
-![PCB Overview](images/pcb_overview.png)  
-*Figure 1: Main PCB component layout (source: FCC ID: FHO-E2400-T, annotated).*
+![Stock PCB](images/stock_pcb.jpg)  
+*Figure 1: Stock IKEA VÄSTMÄRKE PCB (`WL1503A-V1.4`) inside the tray before modification, with original `FT60E011A` MCU installed.*
 
 ---
 
@@ -13,6 +13,7 @@ Integrates the LED mood light and the physical puck push button into Home Assist
 
 * **Mood Light Control:** 0–100% smooth PWM dimming via Home Assistant and physical button.
 * **Smart Puck Button:** Multi-click actions (single click toggles light, double click fires Home Assistant event, hold dims light).
+* **Decoupled Button Mode:** Optional settings switch in Home Assistant to decouple the physical button from the lamp.
 * **Autonomous Qi2 Charging:** Qi2 15W MPP fast charging electronics remain untouched and function independently.
 * **Invisible Installation:** Both boards fit inside the bottom cavity. The exterior remains completely stock.
 
@@ -23,7 +24,7 @@ Integrates the LED mood light and the physical puck push button into Home Assist
 * **IKEA VÄSTMÄRKE** wireless charging tray (`E2400-T`)
 * **ESP32-C3 Super Mini**
 * **DD4012SA DC-DC buck converter** (configured for 3.3V output)
-* Thin hookup wire (AWG 28–32)
+* Thin hookup wire (AWG 28–32 or enameled copper wire)
 
 ---
 
@@ -42,11 +43,14 @@ The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V dur
 
 ## Wiring & Solder Points
 
+![Soldered Connections](images/soldered_pads.jpg)  
+*Figure 2: Real build close-up with `FT60E011A` desoldered. Enameled copper wires connected to Pad 2 (Puck button) and Pad 7 (LED PWM gate). (Note: Power supply wires to VBUS/GND were added in the next step; SDA/SCL wires shown were used during diagnostic I2C testing and are not needed).*
+
 ![MCU Pads](images/mcu_pads.png)  
-*Figure 2: MCU location and solder pads (FT60E011A desoldered).*
+*Figure 3: MCU footprint pinout diagram.*
 
 ![Power Pads](images/power_pads.png)  
-*Figure 3: VBUS and GND power solder points (source: FCC ID: FHO-E2400-T).*
+*Figure 4: VBUS and GND power solder points (source: FCC ID: FHO-E2400-T).*
 
 | Signal | Source on IKEA PCB | Destination | Description |
 | :--- | :--- | :--- | :--- |
@@ -217,11 +221,8 @@ action:
 
 ## Image Sources & Attribution
 
-All PCB photographs in this repository are derived from the publicly available FCC equipment authorization filings:
-* **Applicant:** IKEA of Sweden AB
-* **FCC ID:** [`FHO-E2400-T`](https://fccid.io/FHO-E2400-T)
-* **Exhibit:** Internal Photos
-* **License/Usage:** Public regulatory filing documents. Annotations, pinout markers, and pad highlights were added for this guide.
+* **Figure 1 & Figure 2 (Physical build photos):** Captured by [@josb25](https://github.com/josb25) during the modification.
+* **Figure 3 & Figure 4 (PCB diagrams):** Derived from the publicly available FCC compliance filings ([`FCC ID: FHO-E2400-T`](https://fccid.io/FHO-E2400-T), IKEA of Sweden AB, Exhibit: Internal Photos). Annotations and pinout markers were added for this guide.
 
 ---
 
