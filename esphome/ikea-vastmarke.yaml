@@ -51,6 +51,16 @@ status_led:
     number: ${pin_status_led}
     inverted: true
 
+# Home Assistant Event entity (exposes single_press, double_press, long_press)
+event:
+  - platform: template
+    name: "Button Event"
+    id: puck_event
+    event_types:
+      - single_press
+      - double_press
+      - long_press
+
 sensor:
   - platform: wifi_signal
     name: "WiFi Signal"
@@ -68,39 +78,53 @@ binary_sensor:
     name: "Puck Button"
     id: puck_button
     filters:
-      - delayed_on_off: 30ms
+      - delayed_on_off: 25ms
 
     on_multi_click:
-      # Single click: Toggle mood light
+      # 1. Single Click (Short press): Toggle mood light & fire single_press event
       - timing:
           - ON for at most 400ms
-          - OFF for at least 300ms
+          - OFF for at least 250ms
         then:
           - light.toggle: mood_light
+          - event.trigger:
+              id: puck_event
+              event_type: single_press
+          - homeassistant.event:
+              event: esphome.ikea_vastmarke_button
+              data:
+                action: single_click
 
-      # Double click: Fire event in Home Assistant (e.g. good night scene)
+      # 2. Double Click: Fire double_press event (e.g. bedtime / all off scene)
       - timing:
           - ON for at most 400ms
           - OFF for at most 400ms
           - ON for at most 400ms
+          - OFF for at least 200ms
         then:
+          - event.trigger:
+              id: puck_event
+              event_type: double_press
           - homeassistant.event:
               event: esphome.ikea_vastmarke_button
               data:
                 action: double_click
 
-      # Long press: Dim light relative
+      # 3. Long Press (Hold > 500ms): Relative dimming & fire long_press event
       - timing:
-          - ON for at least 600ms
+          - ON for at least 500ms
         then:
-          - homeassistant.event:
-              event: esphome.ikea_vastmarke_button
-              data:
-                action: long_press
           - light.dim_relative:
               id: mood_light
               relative_brightness: 25%
               transition_length: 300ms
+          - event.trigger:
+              id: puck_event
+              event_type: long_press
+          - homeassistant.event:
+              event: esphome.ikea_vastmarke_button
+              data:
+                action: long_press
 
 output:
   - platform: ledc

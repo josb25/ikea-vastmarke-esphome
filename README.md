@@ -101,9 +101,20 @@ light:
     restore_mode: RESTORE_DEFAULT_OFF
 ```
 
-### Button Behavior
+### Button Behavior (Single, Double & Long Press)
+
+The physical puck button fires native Home Assistant events (`single_press`, `double_press`, `long_press`) and controls the lamp locally:
 
 ```yaml
+event:
+  - platform: template
+    name: "Button Event"
+    id: puck_event
+    event_types:
+      - single_press
+      - double_press
+      - long_press
+
 binary_sensor:
   - platform: gpio
     pin:
@@ -112,42 +123,56 @@ binary_sensor:
       inverted: true
     name: "Puck Button"
     id: puck_button
+    filters:
+      - delayed_on_off: 25ms
     on_multi_click:
+      # Single Click: Toggle light & fire single_press event
       - timing:
           - ON for at most 400ms
-          - OFF for at least 300ms
+          - OFF for at least 250ms
         then:
           - light.toggle: mood_light
+          - event.trigger:
+              id: puck_event
+              event_type: single_press
+
+      # Double Click: Fire double_press event (e.g. good night routine)
       - timing:
           - ON for at most 400ms
           - OFF for at most 400ms
           - ON for at most 400ms
+          - OFF for at least 200ms
         then:
-          - homeassistant.event:
-              event: esphome.ikea_vastmarke_button
-              data:
-                action: double_click
+          - event.trigger:
+              id: puck_event
+              event_type: double_press
+
+      # Long Press: Relative dimming & fire long_press event
       - timing:
-          - ON for at least 600ms
+          - ON for at least 500ms
         then:
           - light.dim_relative:
               id: mood_light
               relative_brightness: 25%
+              transition_length: 300ms
+          - event.trigger:
+              id: puck_event
+              event_type: long_press
 ```
 
 ---
 
-## Home Assistant Automation Example
+## Home Assistant Automations
 
-Handle the double-click event to trigger an action (e.g. good night routine):
+In Home Assistant, use the native **Event** trigger:
 
 ```yaml
-alias: "Bedside: Double click puck button"
+# Example: Double-click triggers bedtime scene
+alias: "Bedside: Double-click turn off room"
 trigger:
-  - platform: event
-    event_type: esphome.ikea_vastmarke_button
-    event_data:
-      action: double_click
+  - platform: state
+    entity_id: event.ikea_vastmarke_button_event
+    to: "double_press"
 action:
   - service: light.turn_off
     target:
