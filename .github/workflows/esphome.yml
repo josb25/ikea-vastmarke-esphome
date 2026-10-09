@@ -1,0 +1,43 @@
+name: Validate and compile ESPHome
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  firmware:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Install ESPHome
+        run: python -m pip install esphome==2026.9.1
+      - name: Supply dummy build credentials
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64
+          dummy = {
+              'wifi_ssid': 'CI-NOT-A-REAL-NETWORK',
+              'wifi_password': 'DummyWifiPasswordOnly',
+              'fallback_ap_password': 'DummyFallbackPasswordOnly',
+              'api_encryption_key': base64.b64encode(bytes(range(32))).decode(),
+              'ota_password': 'DummyOtaPasswordOnly',
+              'web_server_username': 'ci-user',
+              'web_server_password': 'DummyWebPasswordOnly',
+          }
+          Path('esphome/secrets.yaml').write_text(
+              '\n'.join(f'{key}: "{value}"' for key, value in dummy.items()) + '\n'
+          )
+          PY
+      - name: Validate configuration
+        run: esphome config esphome/ikea-vastmarke.yaml
+      - name: Compile firmware
+        run: esphome compile esphome/ikea-vastmarke.yaml

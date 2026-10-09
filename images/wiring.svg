@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="900" viewBox="0 0 1100 900" role="img" aria-labelledby="title desc">
+  <title id="title">IKEA VASTMARKE ESP32-C3 wiring</title>
+  <desc id="desc">Stock MCU pad 2 connects to GPIO4; pad 7 connects to GPIO5. VBUS feeds the 3.3 volt buck input; its output feeds ESP32 3V3. Stock board, buck, and ESP32 share ground. A separate SOP-8 top-view inset shows counterclockwise pin numbering from the pin-1 mark.</desc>
+  <style>text{font-family:Arial,sans-serif;fill:#172c40;font-size:20px}.h{font-size:25px;font-weight:bold}.small{font-size:17px}.label{font-weight:bold}.box{fill:#f3f6fa;stroke:#8093a6;stroke-width:2}.wire{fill:none;stroke-width:5;stroke-linejoin:round;stroke-linecap:round}</style>
+  <rect width="1100" height="900" fill="white"/>
+  <text x="40" y="43" class="h">IKEA VASTMARKE E2400-T / WL1503A-V1.4</text>
+  <text x="40" y="72" class="small">Logical connections • unplug all power before soldering • verify converter output before connection</text>
+  <rect x="40" y="100" width="270" height="490" rx="15" class="box"/>
+  <text x="60" y="141" class="h">Stock IKEA PCB</text>
+  <text x="60" y="176" class="small">FT60E011A removed</text>
+  <text x="60" y="217" class="label">MCU pad 2</text><text x="60" y="243" class="small">SW1 button / active-low</text>
+  <text x="60" y="292" class="label">MCU pad 7</text><text x="60" y="318" class="small">Existing LED MOSFET gate</text>
+  <text x="60" y="442" class="label">VBUS</text><text x="60" y="468" class="small">USB supply, 5–9V</text>
+  <text x="60" y="531" class="label">GND</text><text x="60" y="557" class="small">Verify against USB ground</text>
+  <rect x="780" y="100" width="280" height="490" rx="15" class="box"/>
+  <text x="800" y="141" class="h">ESP32-C3</text><text x="800" y="174" class="small">Super Mini</text>
+  <text x="800" y="217" class="label">GPIO4</text><text x="800" y="243" class="small">INPUT_PULLUP, inverted</text>
+  <text x="800" y="292" class="label">GPIO5</text><text x="800" y="318" class="small">PWM output, 600Hz</text>
+  <text x="800" y="442" class="label">3V3</text><text x="800" y="468" class="small">3.3V only</text>
+  <text x="800" y="535" class="label">GND</text>
+  <path class="wire" stroke="#1466ac" d="M310 213 H780"/>
+  <text x="415" y="202" class="small">Button signal</text>
+  <path class="wire" stroke="#8854ae" d="M310 288 H780"/>
+  <text x="425" y="277" class="small">LED gate signal</text>
+  <rect x="380" y="370" width="300" height="195" rx="15" class="box"/>
+  <text x="398" y="407" class="h">DD4012SA · 3.3V</text>
+  <text x="398" y="441" class="label">VIN+</text><text x="580" y="441" class="label">VOUT+</text>
+  <text x="463" y="486" class="small">Verify 3.3V</text><text x="506" y="540" class="label">GND</text>
+  <path class="wire" stroke="#c47508" d="M310 438 H380"/>
+  <path class="wire" stroke="#c93434" d="M680 438 H780"/>
+  <path class="wire" stroke="#273d50" d="M310 527 H345 V625 H920 V590 M530 565 V625"/>
+  <path class="wire" stroke="#273d50" d="M810 545 V574 H920 V590"/>
+  <circle cx="530" cy="625" r="6" fill="#273d50"/>
+  <text x="405" y="656" class="label">Common ground</text>
+  <rect x="40" y="690" width="500" height="180" rx="12" class="box"/>
+  <text x="60" y="720" class="label">SOP-8 top view</text>
+  <text x="60" y="749" class="small">Rotate to match</text><text x="60" y="773" class="small">the actual board.</text>
+  <text x="60" y="812" class="small">Note pin-1 mark</text><text x="60" y="836" class="small">before removal.</text>
+  <rect x="250" y="744" width="80" height="96" rx="7" fill="white" stroke="#8093a6" stroke-width="2"/>
+  <circle cx="263" cy="755" r="5" fill="#273d50"/>
+  <path d="M230 756 H250 M230 780 H250 M230 804 H250 M230 828 H250 M330 756 H350 M330 780 H350 M330 804 H350 M330 828 H350" fill="none" stroke="#8093a6" stroke-width="5"/>
+  <text x="211" y="762" class="small">1</text><text x="211" y="786" class="small">2</text><text x="211" y="810" class="small">3</text><text x="211" y="834" class="small">4</text>
+  <text x="360" y="762" class="small">8</text><text x="360" y="786" class="small">7</text><text x="360" y="810" class="small">6</text><text x="360" y="834" class="small">5</text>
+  <text x="571" y="719" class="label">USB flashing</text>
+  <text x="571" y="750" class="small">Flash the bare, disconnected ESP32 first.</text>
+  <text x="571" y="778" class="small">Unplug ESP32 USB before assembly.</text>
+  <text x="571" y="806" class="small">Use native OTA for installed updates.</text>
+  <text x="571" y="834" class="small">See README for wired recovery isolation.</text>
+</svg>
