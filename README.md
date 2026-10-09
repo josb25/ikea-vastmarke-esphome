@@ -25,6 +25,7 @@ Integrates the LED mood light and the physical puck push button into Home Assist
 * **ESP32-C3 Super Mini**
 * **DD4012SA DC-DC buck converter** (configured for 3.3V output)
 * Thin hookup wire (AWG 28–32 or enameled copper wire)
+* Kapton tape & hot glue
 
 ---
 
@@ -62,7 +63,7 @@ The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V dur
 > **Assembly Order:** Solder flying wire leads to the IKEA stock board **first**, then route them through the USB cable channel and reassemble the internal tray. Only **after** the tray is closed do you solder the wires to the ESP32 and DD4012SA in the bottom cavity.
 
 1. **Flash Firmware:** Flash the ESP32-C3 via USB before installing (see [ESPHome Config](#esphome-config)).
-2. **Disassemble:** Remove the rubber base and screws. Carefully lift the coil assembly (watch out for the three puck springs under the button).
+2. **Disassemble:** Remove the screws on the bottom of the tray. Carefully lift the coil assembly (watch out for the three puck springs under the button).
 3. **Desolder MCU:** Desolder and remove the 8-pin `FT60E011A` chip next to the button. Clean pads with solder wick.
 4. **Solder Leads to Stock PCB:**
    Cut 4 thin wires (AWG 28–32 or enameled copper wire, ~8–10 cm long) and solder them to the stock PCB:
@@ -85,13 +86,13 @@ The `DD4012SA` buck converter steps down the variable `VBUS` (5V standby, 9V dur
    * Solder DD4012SA **VOUT+** (3.3V) to ESP32 **3V3**.
    * Solder the **Pad 2 lead** to ESP32 **GPIO 4**.
    * Solder the **Pad 7 lead** to ESP32 **GPIO 5**.
-7. **Mount & Close:**
-   * Apply insulating tape (e.g. Kapton) to the boards if needed.
-   * Secure the ESP32-C3 Super Mini and DD4012SA inside the bottom cavity using adhesive or double-sided tape.
-   * Reattach the rubber base.
+7. **Secure Boards:**
+   * Insulate both boards with Kapton tape.
+   * Fix the ESP32-C3 Super Mini and DD4012SA inside the bottom cavity with hot glue (the stiff wires also help hold them securely in position).
+   * Note: The bottom cavity remains open as stock for cable management—there is no bottom cover to reattach.
 
 ![Bottom Assembly](images/bottom_assembly.jpg)  
-*Figure 3: Completed bottom cavity assembly. The DD4012SA buck converter (left) and ESP32-C3 Super Mini (right) are insulated with Kapton tape, wired to the routed leads, and secured in the cavity next to the USB cable routing opening.*
+*Figure 3: Completed bottom cavity assembly. The DD4012SA buck converter (left) and ESP32-C3 Super Mini (right) are insulated with Kapton tape, wired to the routed leads, and fixed in place with hot glue inside the open cable cavity.*
 
 ---
 
